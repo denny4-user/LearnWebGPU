@@ -72,16 +72,7 @@ The main body of the guide misses a few extra lines, refer to the [Building for 
 `````
 
 ```{admonition}  🚧 Work in progress
-This guide is still **under construction**, and **the WebGPU standard is still evolving**. To help the reader tracking how up to date it is, we use the following signs in chapter's titles:
-
-🟢 **Up to date!** *Uses the latest stable version of [WebGPU-distribution](https://github.com/eliemichel/WebGPU-distribution), namely `v0.2.0`.*  
-🟡 **Ready to read** *but uses an older version of WebGPU.*  
-🟠 **Work in progress**: *readable enough, but not complete.*  
-🔴 **TODO**: *we only scratched the surface.*  
-
-For a preview of the **future version** of this guide, you may have a look at the hidden [Next](next/index.md) section, but it is not meant to be stable.
-
-**NB:** When using the accompagnying code of a chapter, make sure to use **the very version** of `webgpu/` that it provides to avoid discrepancies.
+This is the "Next" version of the guide, which is not meant to be stable. Chapters are based on an early prerelease of [WebGPU-distribution](https://github.com/eliemichel/WebGPU-distribution), namely [`v0.3.0-gamma`](https://github.com/eliemichel/WebGPU-distribution/releases/tag/v0.3.0-gamma). They do not always work with wgpu-native, and require to use emdawnwebgpu when building for the web.
 ```
 
 Contents
@@ -94,13 +85,5 @@ introduction
 getting-started/index
 basic-3d-rendering/index
 basic-compute/index
-advanced-techniques/index
 appendices/index
-```
-
-```{toctree}
-:titlesonly:
-:hidden:
-
-next/index
 ```
