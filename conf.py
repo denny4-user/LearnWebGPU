@@ -194,5 +194,10 @@ lit_use_default_style = True
 # -- Options for translation -----------------------------------------
 
 translation_languages = [
-    ("ru", "🇷🇺", "Русский", "Russian")
+    ("en", "🇺🇸", "English", ""),
+    ("fr", "🇫🇷", "Français", "French"),
+    ("kr", "🇰🇷", "한국인", "Korean"),
+    ("it", "🇮🇹", "Italiano", "Italian"),
+    ("ru", "🇷🇺", "Русский", "Russian"),
+    ("zh", "🇨🇳", "中文", "Chinese"),
 ]
