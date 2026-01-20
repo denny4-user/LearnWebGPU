@@ -1,27 +1,28 @@
-Learn WebGPU
+## Learn WebGPU
 ============
 
-*For native graphics in C++.*
+*Для нативной графики в C++.*
 
-This documentation walks you through the use of the [WebGPU](https://www.w3.org/TR/webgpu) graphics API to create **native 3D applications** in C++ from scratch, for Windows, Linux and macOS.
+Эта документация проводит вас через использование API графики [WebGPU](https://www.w3.org/TR/webgpu) для создания **нативных 3‑D приложений** на C++ с нуля, под Windows, Linux и macOS.
 
-`````{admonition} Quick Start! (Click Me)
+```{admonition} Быстрый старт! (Нажмите меня)
 :class: foldable quickstart
 
-*Do you want to understand every bit of GPU code you write?*
+*Хотите понять каждый кусочек кода GPU, который вы пишете?*
+```
 
-````{admonition} Yes, write WebGPU code **from scratch**!
+```{admonition} Да, писать код WebGPU **с нуля**!
 :class: foldable yes
 
-That's great! You can simply proceed to the [introduction](introduction.md) and **read all chapters** sequentially.
-````
+Отлично! Вы можете просто перейти к [введение](introduction.md) и **читать все главы последовательно**.
+```
 
-````{admonition} No, I'd rather **skip the initial boilerplate**.
+```{admonition} Нет, я бы предпочёл **пропустить начальный шаблон**.
 :class: foldable no
 
-This perfectly makes sense, you can always **come back to the [basic steps](getting-started/index.md) later**.
+Это полностью оправдано, вы всегда можете **вернуться к [базовым шагам](getting-started/index.md) позже**.
 
-You probably want to check out the _**Resulting code**_ link at the beginning and end of **each page**, e.g.:
+Вероятно, вам будет интересно посмотреть ссылку _**Результирующий код**_ в начале и конце **каждой страницы**, например:
 
 ```{image} /images/intro/resulting-code-light.png
 :class: only-light with-shadow
@@ -31,60 +32,56 @@ You probably want to check out the _**Resulting code**_ link at the beginning an
 :class: only-dark with-shadow
 ```
 
-*Are you ok with using a shallow wrapper for easier reading?*
+*Вы согласны использовать поверхностный обёртчик для удобства чтения?*
 
-```{admonition} Yes, I prefer **C++ styled** code.
+```{admonition} Да, я предпочитаю **код в стиле C++**.
 :class: foldable yes
 
-Use the "**With webgpu.hpp**" tab.
+Используйте вкладку "**With webgpu.hpp**".
 ```
 
-```{admonition} No, show me the **raw C WebGPU API**!
+```{admonition} Нет, покажите мне **сырой API WebGPU на C**!
 :class: foldable no
 
-Use the "**Vanilla webgpu.h**" tab. The *Resulting code* for vanilla WebGPU is less up to date, but this tab also switches **all the code blocks** inside the guide, and these are **up to date**.
+Используйте вкладку "**Vanilla webgpu.h**". Результирующий код для vanilla WebGPU менее актуален, но эта вкладка также переключает **все блоки кода** внутри руководства, и они **обновлены**.
 ```
 
-To **build this base code**, refer to the [Building](getting-started/project-setup.md#building) section of the project setup chapter. You may add `-DWEBGPU_BACKEND=WGPU` (default) or `-DWEBGPU_BACKEND=DAWN` to the `cmake -B build` line to pick respectively [`wgpu-native`](https://github.com/gfx-rs/wgpu-native) or [Dawn](https://dawn.googlesource.com/dawn/) as a backend.
+Для **сборки этого базового кода** обратитесь к разделу [Building](getting-started/project-setup.md#building) главы о настройке проекта. Вы можете добавить `-DWEBGPU_BACKEND=WGPU` (по умолчанию) или `-DWEBGPU_BACKEND=DAWN` в строку `cmake -B build`, чтобы выбрать соответственно [`wgpu-native`](https://github.com/gfx-rs/wgpu-native) или [Dawn](https://dawn.googlesource.com/dawn/) как бэкенд.
 
-*How far do you want the base code to go?*
+*Как далеко вы хотите продвинуть базовый код?*
 
-```{admonition} A simple triangle
+```{admonition} Простое треугольник
 :class: foldable quickstart
 
-Check out the [Hello Triangle](basic-3d-rendering/hello-triangle.md) chapter.
+Посмотрите главу [Hello Triangle](basic-3d-rendering/hello-triangle.md).
 ```
 
-```{admonition} A 3D mesh viewer with basic interaction
+```{admonition} 3‑D просмотрщик сетки с базовым взаимодействием
 :class: foldable quickstart
 
-I recommend starting from the end of the [Lighting control](basic-3d-rendering/some-interaction/lighting-control.md) chapter.
+Рекомендую начать с конца главы [Контроль освещения](basic-3d-rendering/some-interaction/lighting-control.md).
 ```
 
-````
-
-```{admonition} I want things to **run on the Web** as well.
+```{admonition} Я хочу, чтобы всё работало и в Web.
 :class: foldable warning
 
-The main body of the guide misses a few extra lines, refer to the [Building for the Web](appendices/building-for-the-web.md) appendix to **adapt the examples** so that they run on the Web!
+Основной корпус руководства пропускает несколько строк; обратитесь к приложению [Сборка для Web](appendices/building-for-the-web.md), чтобы **адаптировать примеры** так, чтобы они работали в браузере!
 ```
 
-`````
+```{admonition} 🚧 В разработке
+Это руководство всё ещё **в стадии строительства**, а стандарт WebGPU продолжает развиваться. Чтобы помочь читателю отслеживать актуальность, мы используем следующие знаки в названиях глав:
 
-```{admonition}  🚧 Work in progress
-This guide is still **under construction**, and **the WebGPU standard is still evolving**. To help the reader tracking how up to date it is, we use the following signs in chapter's titles:
+🟢 **Актуально!** *Использует последнюю стабильную версию [WebGPU-distribution](https://github.com/eliemichel/WebGPU-distribution), т.е. `v0.2.0`.*  
+🟡 **Готово к чтению** *но использует более старую версию WebGPU.*  
+🟠 **В разработке**: *достаточно читаемо, но не полностью завершено.*  
+🔴 **TODO**: *мы только коснулись темы.*
 
-🟢 **Up to date!** *Uses the latest stable version of [WebGPU-distribution](https://github.com/eliemichel/WebGPU-distribution), namely `v0.2.0`.*  
-🟡 **Ready to read** *but uses an older version of WebGPU.*  
-🟠 **Work in progress**: *readable enough, but not complete.*  
-🔴 **TODO**: *we only scratched the surface.*  
+Для предварительного просмотра **будущей версии** этого руководства вы можете посмотреть скрытую секцию [Next](next/index.md), но она не предназначена как стабильная.
 
-For a preview of the **future version** of this guide, you may have a look at the hidden [Next](next/index.md) section, but it is not meant to be stable.
-
-**NB:** When using the accompagnying code of a chapter, make sure to use **the very version** of `webgpu/` that it provides to avoid discrepancies.
+**NB:** При использовании сопровождающего кода главы убедитесь, что используете **точную версию** `webgpu/`, которую она предоставляет, чтобы избежать несоответствий.
 ```
 
-Contents
+## Содержание
 --------
 
 ```{toctree}

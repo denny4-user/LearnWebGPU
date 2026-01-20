@@ -1,96 +1,96 @@
-Introduction
+Введение
 ============
 
-What is a graphics API?
+Что такое графическая API?
 -----------------------
 
-A personal computer or smartphone commonly contains two computing units: the **CPU** (for *Central Processing Unit*) and the **GPU** (*Graphics Processing Unit*). When programming an application, **one primarily writes instructions for the CPU**. This is what most of programming languages are for.
+Личный компьютер или смартфон обычно содержит две вычислительные единицы: **CPU** (для *центрального процессора*) и **GPU** (*графического процессора*). При разработке приложения в первую очередь пишут инструкции для CPU.
 
 ```{figure} /images/architecture-notes.png
 :align: center
-The CPU and GPU are two different processors. We program the CPU so that it instructs the GPU what to do through the graphics API and the driver.
+CPU и GPU — это два разных процессора. Мы программируем CPU так, чтобы он передавал инструкции GPU через графическую API и драйвер.
 ```
 
-If one wants the application to execute instructions on the GPU (e.g., to render 3D images), the CPU code must **send instructions to the driver** of the GPU. A graphics API is a programming interface used by the CPU code to dialog with the GPU.
+Если приложение должно выполняться на GPU (например, для рендеринга 3D-изображений), код CPU должен **отправлять инструкции драйверу** GPU.
 
-There exists many such APIs, for instance you may have heard of OpenGL, DirectX, Vulkan or Metal.
+Графическая API — это программный интерфейс, используемый кодом CPU для взаимодействия с GPU.
+
+Существует множество таких API, например, вы можете слышать об OpenGL, DirectX, Vulkan или Metal.
 
 ```{tip}
-In theory anyone can invent their own graphics API. Each GPU vendor has its own low-level protocol for their driver to dialog with the hardware, on top of which the more common APIs are implemented (often provided with the driver).
+Теоретически любой может создать собственную графическую API. Каждый производитель GPU имеет собственный низкоуровневый протокол для взаимодействия с оборудованием, на котором реализованы более распространенные API (часто поставляются вместе с драйвером).
 ```
 
-In this documentation, we learn a graphics API called [WebGPU](https://www.w3.org/TR/webgpu/). This API has been designed to provide a **unified access** to GPUs whichever the GPU vendor and operating system the application runs with.
+В этой документации мы изучаем графическую API, называемую [WebGPU](https://www.w3.org/TR/webgpu/). Эта API была разработана для предоставления **унифицированного доступа** к GPU независимо от производителя и операционной системы, на которой работает приложение.
 
 ```{figure} /images/rhi.png
 :align: center
 :class: with-shadow
-WebGPU is a *Render Hardware Interface* built on top of the various APIs provided by the driver/OS depending on your platform. This duplicated development effort is made once by the web browsers and made available to us through the `webgpu.h` header they provide.
+WebGPU — это *RHI* (Render Hardware Interface), построенный на различных API, предоставляемых драйвером/ОС в зависимости от вашей платформы. Эта дублированная разработка выполняется один раз браузерами и предоставлена нам через заголовочный файл `webgpu.h`.
 ```
 
 <!--
-    The different applications running on the computer are orchestrated in the CPU space, by the Operating System.
-
-    Some APIs are directly provided by the driver, some others are an extra programming layer (a .so or .dll shared library, or some C files that needs to be compiled with your application).
+    Приложения на компьютере организуются в пространстве CPU, управляемые операционной системой.
 -->
 
-Why WebGPU?
+Почему WebGPU?
 -----------
 
-> 🤔 Yeah, why in the world would I use a **web API** to develop a **desktop application**?
+> 🤔 А почему бы мне не использовать **веб-API** для разработки **десктоп-приложения**?
 
-Glad you asked, the short answer is:
+Рад, что вы спросили. Короткий ответ:
 
- - Reasonable level of abstraction
- - Good performance
- - Cross-platform
- - Standard enough
- - Future-proof
+- Разумный уровень абстракции
+- Хорошая производительность
+- Многоплатформенность
+- Достаточно стандартный
+- Готов к будущему
 
-And it is actually the **only** graphics API that benefits from all of these properties!
+И это **единственная** графическая API, которая обеспечивает все эти свойства!
 
-Yes, the WebGPU API has been **designed primarily for the web**, as an interface between JavaScript and GPUs. This is **not a drawback**, since as of today the requirements in terms of performance for web pages is actually the same as for native application. You can read more about [why I believe that WebGPU is the best graphics API to learn in 2023](appendices/teaching-native-graphics-in-2023.md).
+Да, WebGPU был **разработан в первую очередь для веба**, как интерфейс между JavaScript и GPU. Это **не является недостатком**, так как требования к производительности для веб-страниц сегодня на уровне, соответствующем нативным приложениям. Вы можете узнать больше в [причинах, почему я считаю, что WebGPU — лучший графический API для изучения в 2023 году](appendices/teaching-native-graphics-in-2023.md).
 
 ```{note}
-When designing an API for the Web, the two key constraints are **portability** and **privacy**. We **benefit** here from the effort developed for portability, and fortunately the limitations of the API due to privacy considerations can be **disabled** when using WebGPU as a native API.
+При проектировании API для веба два ключевых ограничения — **портабельность** и **приватность**. Здесь мы **пользуемся** усилиями, разработанными для портабельности, и к счастью, ограничения API из-за аспектов приватности можно **отключить** при использовании WebGPU как нативного API.
 ```
 
-Why C++ then?
--------------
+Почему C++?
+------------
 
-Shouldn't we use **JavaScript** since it is the initial target of WebGPU? Or **C** because it is the language of the `webgpu.h` header we'll be using? Or **Rust** since this is the language in which one of the WebGPU backend is written? All of these are valid languages to use WebGPU with, but I chose C++ because:
+Неужели мы не должны использовать **JavaScript**, так как он является первоначальной целевой платформой WebGPU? Или **C**, так как он используется в заголовочном файле `webgpu.h`? Или **Rust**, так как один из бэкендов WebGPU написан на Rust? Все эти языки могут использоваться с WebGPU, но я выбрал C++, потому что:
 
- - C++ is still the primary language used for high performance graphics application (video games, render engines, modeling tools, etc.).
- - The level of abstraction and control of C++ is well suited for interacting with graphics APIs in general.
- - Graphics programming is a very good occasion to really learn C++. I will only assume a very shallow knowledge of this language in the beginning.
+- C++ по-прежнему является основным языком для высокопроизводительных графических приложений (игры, рендер-движки, инструменты моделирования и т. д.).
+- Уровень абстракции и контроля C++ хорошо подходит для взаимодействия с графическими API в целом.
+- Графическое программирование — отличная возможность для глубокого изучения C++. В начале я предполагаю очень поверхностные знания этого языка.
 
 ```{seealso}
-For an equivalent of this documentation for Rust, I recommend you to have a look at Sotrh's [Learn WGPU](https://sotrh.github.io/learn-wgpu).
+Для эквивалента этой документации на Rust рекомендуется посмотреть [Learn WGPU](https://sotrh.github.io/learn-wgpu).
 ```
 
-How to use this documentation?
+Как использовать эту документацию?
 ------------------------------
 
-### Reading
+### Чтение
 
-The first two parts of this documentation have been designed to be read sequentially, as a full lecture, but its different pages can also be used as reminders on specific topics.
+Первые две части этой документации разработаны для последовательного чтения, как полный курс, но отдельные страницы также могут быть использованы как напоминания по конкретным темам.
 
-The [Getting Started](getting-started/index.md) part deals with the boilerplate needed to initialize WebGPU and the window management (using GLFW), and introduces key concepts and idioms of the API. In this section, we manipulate the raw C API, and finish by introducing the C++ wrapper that we use in the rest of this documentation.
+Часть [Начало](getting-started/index.md) посвящена базовому коду для инициализации WebGPU и управления окном (используя GLFW), а также вводит ключевые концепции и идиомы API. В этой части мы работаем с исходным C-API, и завершаем введение C++-обертки, которую мы используем в остальной части документации.
 
-It is possible to **go straight to part 2** on [Basic 3D Rendering](basic-3d-rendering/index.md) and use the boilerplate code resulting from part 1 as a starter kit. You can always come back later to the details of the getting started part later on.
+Возможно, сразу перейти к части 2: [Базовый 3D-рендеринг](basic-3d-rendering/index.md), используя шаблоны кода из части 1 как стартовую платформу. Позже вы можете вернуться к деталям части 1.
 
-Rendering is far from being the only use of GPUs nowadays; part 3 introduces [Basic Compute](basic-compute/index.md), i.e., non-rendering use of WebGPU.
+Рендеринг — это далеко не единственное применение GPU в современных системах. Часть 3 вводит [Базовый вычислительный рендеринг](basic-compute/index.md), то есть нерендеринговое использование WebGPU.
 
-The fourth part [Advanced Techniques](advanced-techniques/index.md) is made of focus points on various computer graphics techniques, which can be read more independently on each others.
+Четвертая часть [Продвинутые техники](advanced-techniques/index.md) состоит из фокусных точек по различным компьютерным графикам, которые могут быть прочитаны независимо друг от друга.
 
-### Literate Programming
+### Литературное программирование
 
 ```{warning}
-This guide is in an early phase; it is only available for the first few chapters.
+Этот гайд находится на ранней стадии; доступен только для первых нескольких глав.
 ```
 
-This guide follows the principle of **Literate Programming**: the documentation you read is annotated such that one can **automatically combine its code blocks** into a fully working code. This is a way to ensure that the guide truly contains everything you need to **reproduce the results**.
+Этот гайд следует принципу **Literate Programming**: документация, которую вы читаете, анотирована так, что можно **автоматически объединить блоки кода** в полностью рабочий код. Это позволяет убедиться, что гайд содержит всё, что необходимо для **воспроизведения результатов**.
 
-On the right-hand sidebar of the chapters that support it, you can enable/disable the display of these information:
+На правой панели справа от глав, которые поддерживают это, можно включать/отключать отображение этой информации:
 
 ```{image} /images/literate-light.png
 :align: center
@@ -102,30 +102,31 @@ On the right-hand sidebar of the chapters that support it, you can enable/disabl
 :class: only-dark
 ```
 
-Everything is turned off by default to avoid visual clutter, but if you feel you don't know where exactly to include in particular code snippet, you can turn them on.
+Все элементы по умолчанию отключены, чтобы избежать визуального шума. Если вы не знаете, где именно вставить определенный блок кода, вы можете включить их.
 
-### Contributing
+### Вклад
 
-If you encounter any typo or more important issue, feel free of fixing it by clicking the edit button present on top of each page!
+Если вы обнаружите опечатку или более серьезную проблему, вы можете исправить её, нажав кнопку редактирования вверху каждой страницы!
 
 ```{image} images/edit-light.png
-:alt: Use the edit button present on top of each page!
+:alt: Использовать кнопку редактирования вверху каждой страницы!
 :class: only-light
 ```
 
 ```{image} images/edit-dark.png
-:alt: Use the edit button present on top of each page!
+:alt: Использовать кнопку редактирования вверху каждой страницы!
 :class: only-dark
 ```
 
-More generally, you can discuss any technical or organizational choice through [the repo's issues](https://github.com/eliemichel/LearnWebGPU/issues). Any constructive and/or benevolent feedback is welcome!
+В целом, вы можете обсудить любые технические или организационные решения через [issues в репозитории](https://github.com/eliemichel/LearnWebGPU/issues). Любая конструктивная и добротная обратная связь приветствуется!
 
-### Work In Progress
+### В процессе разработки
 
-This guide is still under construction, and the WebGPU API itself is as well. I am trying to follow as tightly as I can the changes, but until the API gets stable this inherently leads to slight inconsistencies.
+Эта документация еще в процессе разработки, и сама WebGPU API также находится в процессе. Я пытаюсь следовать изменениям как можно ближе, но пока API не стален, это приводит к небольшим несогласованностям.
 
-Always pay attention to the date of last modification of a page and of the accompanying code (using [git](https://github.com/eliemichel/LearnWebGPU)). They may not be perfectly in sync; usually I first update the code, then the content of the guide.
+Всегда обращайте внимание на дату последнего изменения страницы и сопутствующего кода (используя [git](https://github.com/eliemichel/LearnWebGPU)). Они могут не быть полностью синхронизированы; обычно сначала обновляется код, затем содержание документации.
 
 <!--
-    Cross-platform is not optional. It never really was, but since the global pandemic of 2020 it is even more important: students follow the lecture from a wide variety of devices and a teacher cannot rely on them using all the same machine from the university's lab room.
+
+    Многоплатформенность не является опциональной. Она никогда не была, но с глобальной пандемией 2020 года это даже более важно: студенты учатся с разных устройств, и учитель не может надеяться, что все будут использовать одинаковые машины в лаборатории университета.
 -->

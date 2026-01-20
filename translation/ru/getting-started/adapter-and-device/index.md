@@ -1,16 +1,15 @@
-Adapter and Device
-==================
+Адаптер и устройство
+=======================
 
-The **device** is the **main object** we interact with when using WebGPU. It is the object from which we can **create** all other ones (textures, buffers, pipelines, etc.), **send instructions** to the GPU, and **handle errors**.
+Устройство (**main объект**, с которым взаимодействуем при использовании WebGPU**) — это основной объект, от которого можно создавать все остальные (текстуры, буферы, пайплайн и т. д.), отправлять инструкции на GPU и обрабатывать ошибки.
 
-The next two chapters describes the **device initialization process**, which is where we also **check the capabilities** of the end user's physical device.
+В следующих двух главах описывается **процесс инициализации устройства**, где также проверяются возможности физического устройства пользователя.
 
-Contents
---------
-
+Содержание
+---------
 ```{toctree}
 :titlesonly:
 
-the-adapter
-the-device
+адаптер-устройство
+устройство
 ```
